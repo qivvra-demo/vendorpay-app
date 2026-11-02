@@ -11,15 +11,16 @@
 
 ## Planned commits
 
-1. **8e7c4b1** "VP-184: bank-change request and approval"
-   - New table `supplier_bank_change_requests` (requested_by, approved_by, status).
-   - `POST /api/suppliers/:id/bank-change-requests` (PROCUREMENT) and `POST /api/bank-change-requests/:id/approve` (FINANCE_APPROVER).
+1. **Commit 1 (built; the QIVVRA prototype calls it 8e7c4b1)** "VP-184: bank-change request and approval"
+   - New table `bank_change_requests` (requested_by, decided_by, status) and migration `002`.
+   - `POST /api/suppliers/:id/bank-change-requests` (PROCUREMENT, FINANCE_APPROVER), `POST /api/bank-change-requests/:id/approve` and `/reject` (FINANCE_APPROVER).
+   - UI: change form and history on the supplier page, plus a Bank changes queue.
    - On approval the new account becomes active and the old one inactive.
-   - **Defect 1 (intentional):** the approver is not checked against the requester, so a user holding both roles can approve their own change.
+   - **Defect 1 (intentional):** the approver is not checked against the requester. Finance Approvers can also raise changes, so one approver can request and approve their own change.
    - **Defect 2 (intentional, from the silent story):** payments already scheduled to the old account (PAY-7821) are left pointing at it, with no review or notice.
-   - Team tests cover all four written acceptance criteria and pass.
+   - Team tests cover all four written acceptance criteria and pass (25/25). See `pr-482-demo.md`.
 
-2. **c41d9e2** "VP-184: block self-approval of bank changes"
+2. **Commit 2 (next; the QIVVRA prototype calls it c41d9e2)** "VP-184: block self-approval of bank changes"
    - Approval by the requester returns 403 `SELF_APPROVAL_NOT_ALLOWED`.
    - Scheduled payments are still unaddressed, so QIVVRA should move from NOT READY (violated rule) to READY WITH EXCEPTIONS or NOT READY (insufficient evidence on scheduled payments), depending on the policy owner's decision.
 

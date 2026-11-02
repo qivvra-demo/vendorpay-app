@@ -12,7 +12,7 @@ Baseline platform: sign-in, roles, `/health`, `/version` and log masking.
 | VP-182 | Story | Done | Show bank account numbers masked everywhere |
 | VP-183 | Story | Done | Schedule and release supplier payments with separation of duties |
 | VP-185 | Story | Done | Record an audit trail of every change |
-| VP-184 | Story | To Do | Let Procurement change a supplier's bank account |
+| VP-184 | Story | In Review (PR #482) | Let Procurement change a supplier's bank account |
 
 ## Done stories (on `main`)
 
@@ -77,6 +77,11 @@ Also note criterion 2 does not say the approver must be a different person from 
 | VP-183 a past date is rejected | VP-183 |
 | VP-183 a Finance Approver releases a scheduled payment once | VP-183 |
 | VP-183 Finance Ops cannot release payments | VP-183 |
+| VP-184 Procurement submits a new bank account for an active supplier | VP-184 |
+| VP-184 the new account stays inactive until a Finance Approver approves it | VP-184 |
+| VP-184 Procurement cannot approve a bank change | VP-184 |
+| VP-184 the new account number is masked in API responses | VP-184 |
+| VP-184 the request and the approval are recorded in the audit trail | VP-184 |
 | VP-185 onboarding, verification and scheduling are recorded with the actor | VP-185 |
 | VP-185 audit details never contain a full account number | VP-185 |
 | VP-185 Finance Ops cannot read the audit trail | VP-185 |

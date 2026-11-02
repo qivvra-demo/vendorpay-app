@@ -1,6 +1,6 @@
 # VendorPay
 
-VendorPay is a small supplier-payments app. It is the **reference application for QIVVRA**, a platform that checks whether a code change is ready to ship. This repository is `main`: the baseline **without** the bank-change feature (VP-184), which arrives later as PR #482.
+VendorPay is a small supplier-payments app. It is the **reference application for QIVVRA**, a platform that checks whether a code change is ready to ship. This branch, `feature/VP-184-bank-change` (PR #482), adds the bank-change feature (VP-184) on top of `main`. It contains two deliberate defects for QIVVRA to find; see `docs/pr-482-demo.md`.
 
 It is a real, runnable app with a TypeScript API, a simple web UI, a PostgreSQL database with seeded data, Docker, CI and a team Playwright test suite. Every story, test and commit carries a Jira key.
 
@@ -11,6 +11,7 @@ It is a real, runnable app with a TypeScript API, a simple web UI, a PostgreSQL 
 | Supplier onboarding | Procurement onboards suppliers with a bank account. A Finance Approver verifies the account before the supplier becomes active; the person who added it cannot verify it. | VP-181 |
 | Masked bank details | Account numbers are only ever shown as the last four digits (`**** 4421`), in the UI and in every API response. | VP-182 |
 | Payments | Finance Ops schedules payments to active suppliers. A Finance Approver releases them; the scheduler cannot release their own payment. The destination account is fixed when the payment is created. | VP-183 |
+| Bank account change | Procurement requests a new bank account for an active supplier; a Finance Approver approves or rejects it. | VP-184 |
 | Audit trail | Every change writes an audit event. Auditors and approvers can read it. | VP-185 |
 | Platform | `/health` and `/version` (app, version, git commit, environment). Logs mask any 9–18 digit number. | VP-170 |
 
@@ -69,6 +70,10 @@ All `/api/*` routes except login need `Authorization: Bearer <token>`.
 | GET | `/api/payments/:id` | any | |
 | POST | `/api/payments` | FINANCE_OPS | `{supplierId, amount, scheduledFor}`; 409 `SUPPLIER_NOT_ACTIVE` |
 | POST | `/api/payments/:id/release` | FINANCE_APPROVER | 403 `SELF_RELEASE_NOT_ALLOWED`, 409 `ALREADY_RELEASED` |
+| POST | `/api/suppliers/:id/bank-change-requests` | PROCUREMENT, FINANCE_APPROVER | `{accountNumber, ifsc, reason}`; 409 `CHANGE_ALREADY_PENDING`, `SUPPLIER_NOT_ACTIVE` |
+| GET | `/api/bank-change-requests?supplierId=&status=` | any | Accounts masked |
+| POST | `/api/bank-change-requests/:id/approve` | FINANCE_APPROVER | New account active, old one inactive; 409 `ALREADY_DECIDED` |
+| POST | `/api/bank-change-requests/:id/reject` | FINANCE_APPROVER | `{note}` |
 | GET | `/api/audit-events?entityId=&type=&limit=` | AUDITOR, FINANCE_APPROVER | |
 | GET | `/health` | public | |
 | GET | `/version` | public | `{app, version, gitSha, builtAt, environment}` |
@@ -77,7 +82,7 @@ Wrong role → 403 `FORBIDDEN_ROLE`.
 
 ## Tests
 
-The team suite is in `tests/` (20 tests: `api` and `ui` projects). Each test title starts with the Jira key it covers.
+The team suite is in `tests/` (25 tests: `api` and `ui` projects). Each test title starts with the Jira key it covers.
 
 ```bash
 npm test                                  # starts the app itself

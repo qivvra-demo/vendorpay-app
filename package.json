@@ -1,6 +1,6 @@
 {
   "name": "vendorpay-app",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "private": true,
   "description": "VendorPay: supplier onboarding, masked bank details, scheduled supplier payments and audit trail. Reference application for QIVVRA change assurance.",
   "license": "UNLICENSED",

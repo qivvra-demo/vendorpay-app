@@ -16,6 +16,11 @@ VP-183 Procurement cannot schedule payments,Generic,VP-183,tests/api/payments.sp
 VP-183 a past date is rejected,Generic,VP-183,tests/api/payments.spec.ts
 VP-183 a Finance Approver releases a scheduled payment once,Generic,VP-183,tests/api/payments.spec.ts
 VP-183 Finance Ops cannot release payments,Generic,VP-183,tests/api/payments.spec.ts
+VP-184 Procurement submits a new bank account for an active supplier,Generic,VP-184,tests/api/bank-change.spec.ts
+VP-184 the new account stays inactive until a Finance Approver approves it,Generic,VP-184,tests/api/bank-change.spec.ts
+VP-184 Procurement cannot approve a bank change,Generic,VP-184,tests/api/bank-change.spec.ts
+VP-184 the new account number is masked in API responses,Generic,VP-184,tests/api/bank-change.spec.ts
+VP-184 the request and the approval are recorded in the audit trail,Generic,VP-184,tests/api/bank-change.spec.ts
 VP-185 onboarding, verification and scheduling are recorded with the actor,Generic,VP-185,tests/api/audit.spec.ts
 VP-185 audit details never contain a full account number,Generic,VP-185,tests/api/audit.spec.ts
 VP-185 Finance Ops cannot read the audit trail,Generic,VP-185,tests/api/audit.spec.ts
